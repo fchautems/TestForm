@@ -34,9 +34,11 @@ public class TestForm {
     private static String baseUrl;
     private static int timeout=5000;
 
-    private static Workbook workbook;
+    //private static Workbook workbook;
 
-    private static WorkbookSettings ws = new WorkbookSettings();
+    //private static WorkbookSettings ws = new WorkbookSettings();
+
+    private DataManagement data=new DataManagement();
 
     //public static final Charset UTF_8 = Charset.forName("UTF-8");
 
@@ -58,11 +60,10 @@ public class TestForm {
         //java.nio.charset.StandardCharsets.UTF_8.encode(string);
     }
 
-    public void loadXLS(String pathname) {
+    /*public void loadXLS(String pathname) {
 
         workbook=null;
         try {
-            /* Récupération du classeur Excel (en lecture) */
             workbook = Workbook.getWorkbook(new File(pathname));
         }
         catch (BiffException e) {
@@ -71,18 +72,11 @@ public class TestForm {
         catch (IOException e) {
             e.printStackTrace();
         }
-        /*finally {
-            if(workbook!=null){
-                workbook.close();
-            }
-        }*/
     }
 
     public String readCell(int sheet,int row, int col)
     {
-        /* Un fichier excel est composé de plusieurs feuilles, on y accède de la manière suivante*/
         Sheet s = workbook.getSheet(sheet);
-        /* On accède aux cellules avec la méthode getCell(indiceColonne, indiceLigne) */
         Cell c = s.getCell(row ,col);
         return c.getContents();
     }
@@ -92,7 +86,7 @@ public class TestForm {
         if(workbook!=null){
             workbook.close();
         }
-    }
+    }*/
 
 
     public void init() throws Exception {
@@ -100,8 +94,8 @@ public class TestForm {
         /*int i=0;
         System.out.println(i++);*/
 
-        loadXLS("C:\\Users\\fchautem\\TestLab4techForm\\src\\test\\resources\\TestData.xls");
-        ws.setEncoding("UTF-8");
+        data.loadXLS("C:\\Users\\fchautem\\TestLab4techForm\\src\\test\\resources\\TestData.xls");
+        //ws.setEncoding("UTF-8");
         driver.get(baseUrl);
 
         /*driver.findElement(By.id("view:_id1:_id46:_id57:TypeProvenance")).click();
@@ -118,7 +112,7 @@ public class TestForm {
         upload();
         send();
         Assert.assertTrue(checkConfirmation());
-        quitXLS();
+        data.quitXLS();
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
@@ -131,7 +125,7 @@ public class TestForm {
         upload();
         send();
         Assert.assertTrue(checkConfirmation());
-        quitXLS();
+        data.quitXLS();
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
@@ -144,7 +138,7 @@ public class TestForm {
         upload();
         send();
         Assert.assertTrue(checkConfirmation());
-        quitXLS();
+        data.quitXLS();
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
@@ -157,7 +151,7 @@ public class TestForm {
         upload();
         send();
         Assert.assertTrue(checkConfirmation());
-        quitXLS();
+        data.quitXLS();
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
@@ -170,7 +164,7 @@ public class TestForm {
         upload();
         send();
         Assert.assertTrue(checkConfirmation());
-        quitXLS();
+        data.quitXLS();
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
@@ -183,7 +177,7 @@ public class TestForm {
         upload();
         send();
         Assert.assertTrue(checkConfirmation());
-        quitXLS();
+        data.quitXLS();
     }
 
     @Test(retryAnalyzer = RetryAnalyzer.class)
@@ -196,7 +190,7 @@ public class TestForm {
         upload();
         send();
         Assert.assertTrue(checkConfirmation());
-        quitXLS();
+        data.quitXLS();
     }
 
     @AfterClass
@@ -206,110 +200,120 @@ public class TestForm {
     }
 
     public void donneesORPLACIAvecMesure(int c) throws Exception {
-        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",readCell(0,0,c));
-        selectKey(driver,"view:_id1:_id61:_id72:Canton",readCell(0,1,c));
-        selectKey(driver,"view:_id1:_id87:_id98:ORP",readCell(0,2,1));
-        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",readCell(0,3,c));
-        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",readCell(0,4,c));
-        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",readCell(0,5,c));
-        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",readCell(0,6,c));
-        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",readCell(0,7,c));
-        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",readCell(0,8,c));
-        insertKey(driver,"view:_id1:_id157:_id168:NbreIndemnites",readCell(0,9,c));
-        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",readCell(0,10,c));
-        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",readCell(0,11,c));
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
+        selectKey(driver,"view:_id1:_id87:_id98:ORP",data.readCell(0,2,c));
+        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",data.readCell(0,3,c));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",data.readCell(0,4,c));
+        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",data.readCell(0,5,c));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
+        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",data.readCell(0,8,c));
+        insertKey(driver,"view:_id1:_id157:_id168:NbreIndemnites",data.readCell(0,9,c));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
+        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",data.readCell(0,11,c));
         //System.out.println(readCell(0,11,c));
         //Thread.sleep(10000);
     }
 
     public void donneesORPLACISansMesure(int c) throws Exception {
-        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",readCell(0,0,c));
-        selectKey(driver,"view:_id1:_id61:_id72:Canton",readCell(0,1,c));
-        selectKey(driver,"view:_id1:_id87:_id98:ORP",readCell(0,2,1));
-        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",readCell(0,3,c));
-        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",readCell(0,4,c));
-        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",readCell(0,5,c));
-        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",readCell(0,6,c));
-        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",readCell(0,7,c));
-        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",readCell(0,8,c));
-        insertKey(driver,"view:_id1:_id157:_id168:NbreIndemnites",readCell(0,9,c));
-        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",readCell(0,10,c));
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
+        selectKey(driver,"view:_id1:_id87:_id98:ORP",data.readCell(0,2,1));
+        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",data.readCell(0,3,c));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",data.readCell(0,4,c));
+        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",data.readCell(0,5,c));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
+        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",data.readCell(0,8,c));
+        insertKey(driver,"view:_id1:_id157:_id168:NbreIndemnites",data.readCell(0,9,c));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
     }
 
 
     public void donneesORPRIAvecMesure(int c) throws Exception {
-        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",readCell(0,0,c));
-        selectKey(driver,"view:_id1:_id61:_id72:Canton",readCell(0,1,c));
-        selectKey(driver,"view:_id1:_id87:_id98:ORP",readCell(0,2,1));
-        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",readCell(0,3,c));
-        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",readCell(0,4,c));
-        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",readCell(0,5,c));
-        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",readCell(0,6,c));
-        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",readCell(0,7,c));
-        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",readCell(0,8,c));
-        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",readCell(0,10,c));
-        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",readCell(0,11,c));
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
+        selectKey(driver,"view:_id1:_id87:_id98:ORP",data.readCell(0,2,1));
+        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",data.readCell(0,3,c));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",data.readCell(0,4,c));
+        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",data.readCell(0,5,c));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
+        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",data.readCell(0,8,c));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
+        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",data.readCell(0,11,c));
     }
 
     public void donneesORPRISansMesure(int c) throws Exception {
-        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",readCell(0,0,c));
-        selectKey(driver,"view:_id1:_id61:_id72:Canton",readCell(0,1,c));
-        selectKey(driver,"view:_id1:_id87:_id98:ORP",readCell(0,2,1));
-        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",readCell(0,3,c));
-        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",readCell(0,4,c));
-        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",readCell(0,5,c));
-        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",readCell(0,6,c));
-        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",readCell(0,7,c));
-        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",readCell(0,8,c));
-        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",readCell(0,10,c));
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
+        selectKey(driver,"view:_id1:_id87:_id98:ORP",data.readCell(0,2,1));
+        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",data.readCell(0,3,c));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",data.readCell(0,4,c));
+        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",data.readCell(0,5,c));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
+        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",data.readCell(0,8,c));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
     }
 
 
     public void donneesORPAIAvecMesure(int c) throws Exception {
-        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",readCell(0,0,c));
-        selectKey(driver,"view:_id1:_id61:_id72:Canton",readCell(0,1,c));
-        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",readCell(0,4,c));
-        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",readCell(0,6,c));
-        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",readCell(0,7,c));
-        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",readCell(0,10,c));
-        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",readCell(0,11,c));
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",data.readCell(0,4,c));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
+        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",data.readCell(0,11,c));
     }
 
     public void donneesORPAISansMesure(int c) throws Exception {
-        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",readCell(0,0,c));
-        selectKey(driver,"view:_id1:_id61:_id72:Canton",readCell(0,1,c));
-        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",readCell(0,4,c));
-        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",readCell(0,6,c));
-        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",readCell(0,7,c));
-        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",readCell(0,10,c));
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",data.readCell(0,4,c));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
     }
 
     public void donneesPersonnelles(int c) throws Exception {
         //Thread.sleep(30000);
-        selectKey(driver,"view:_id1:_id353:_id364:CandidateTitre",readCell(0,12,c));
-        insertKey(driver,"view:_id1:_id365:_id376:CandidatPrenom",readCell(0,13,c));
-        insertKey(driver,"view:_id1:_id377:_id388:CandidatNom",readCell(0,14,c));
-        insertKey(driver,"view:_id1:_id389:_id400:CandidatAdresse",readCell(0,15,c));
-        insertKey(driver,"view:_id1:_id401:_id413:npaField",readCell(0,16,c));
-        insertKey(driver,"view:_id1:candidatVilleField:_id426:_id427:_id428:cityField",readCell(0,17,c));
-        insertKey(driver,"view:_id1:_id436:_id447:CandidatEmail",readCell(0,18,c));
-        insertKey(driver,"view:_id1:_id449:_id460:CandidatPhone",readCell(0,19,c));
-        insertKey(driver,"view:_id1:_id461:_id472:CandidatMobile",readCell(0,20,c));
-        selectKey(driver,"view:_id1:_id473:_id484:CandidatEtatCivil",readCell(0,21,c));
-        selectKey(driver,"view:_id1:_id485:_id496:CandidatNationalite",readCell(0,22,c));
-        insertKey(driver,"view:_id1:_id497:_id508:CandidatAnniversaire",readCell(0,23,c));
-        insertKey(driver,"view:_id1:_id511:_id522:CandidatWebsite",readCell(0,24,c));
-        insertKey(driver,"view:_id1:_id523:_id534:CandidatNumAVS",readCell(0,25,c));
+        selectKey(driver,"view:_id1:_id353:_id364:CandidateTitre",data.readCell(0,12,c));
+        insertKey(driver,"view:_id1:_id365:_id376:CandidatPrenom",data.readCell(0,13,c));
+        insertKey(driver,"view:_id1:_id377:_id388:CandidatNom",data.readCell(0,14,c));
+        insertKey(driver,"view:_id1:_id389:_id400:CandidatAdresse",data.readCell(0,15,c));
+        insertKey(driver,"view:_id1:_id401:_id413:npaField",data.readCell(0,16,c));
+        insertKey(driver,"view:_id1:candidatVilleField:_id426:_id427:_id428:cityField",data.readCell(0,17,c));
+        insertKey(driver,"view:_id1:_id436:_id447:CandidatEmail",data.readCell(0,18,c));
+        insertKey(driver,"view:_id1:_id449:_id460:CandidatPhone",data.readCell(0,19,c));
+        insertKey(driver,"view:_id1:_id461:_id472:CandidatMobile",data.readCell(0,20,c));
+        selectKey(driver,"view:_id1:_id473:_id484:CandidatEtatCivil",data.readCell(0,21,c));
+        selectKey(driver,"view:_id1:_id485:_id496:CandidatNationalite",data.readCell(0,22,c));
+        insertKey(driver,"view:_id1:_id497:_id508:CandidatAnniversaire",data.readCell(0,23,c));
+        insertKey(driver,"view:_id1:_id511:_id522:CandidatWebsite",data.readCell(0,24,c));
+        insertKey(driver,"view:_id1:_id523:_id534:CandidatNumAVS",data.readCell(0,25,c));
     }
 
     public void preferencesDeTravail(int c) throws Exception {
         //Thread.sleep(30000);
-        selectKey(driver,"view:_id1:_id545:_id556:CandidatSecteurActivite",readCell(0,26,c));
-        insertKey(driver,"view:_id1:_id557:_id568:CandidatJobActuel",readCell(0,27,c));
-        insertKey(driver,"view:_id1:_id569:_id580:CandidatJobSouhait",readCell(0,28,c));
-        selectKey(driver,"view:_id1:_id582:_id593:CandidatJobTauxOccup",readCell(0,29,c));
-        selectKey(driver,"view:_id1:_id594:_id605:CandidatJobDispo",readCell(0,30,c));
+        selectKey(driver,"view:_id1:_id545:_id556:CandidatSecteurActivite",data.readCell(0,26,c));
+        insertKey(driver,"view:_id1:_id557:_id568:CandidatJobActuel",data.readCell(0,27,c));
+        insertKey(driver,"view:_id1:_id569:_id580:CandidatJobSouhait",data.readCell(0,28,c));
+        selectKey(driver,"view:_id1:_id582:_id593:CandidatJobTauxOccup",data.readCell(0,29,c));
+        selectKey(driver,"view:_id1:_id594:_id605:CandidatJobDispo",data.readCell(0,30,c));
     }
+
+     public void complementDInformation(int c) throws Exception {
+        insertKey(driver,"view:_id1:_id635:_id646:CandidatNbrePostulation3mois",data.readCell(0,31,c));
+        insertKey(driver,"view:_id1:_id648:_id659:CandidatNbreRDVObtenus",data.readCell(0,32,c));
+        insertKey(driver,"view:_id1:_id662:_id673:CandidatEntreprisesCibles",data.readCell(0,33,c));
+        insertKey(driver,"view:_id1:companyRefresh:_id684:CandidatEntreprisesRencontrees",data.readCell(0,34,c));
+        insertKey(driver,"view:_id1:_id685:_id696:IndisponibilitesPrevues",data.readCell(0,35,c));
+        insertKey(driver,"view:_id1:_id697:_id708:Comments",data.readCell(0,36,c));
+    }
+
 
     public void upload() throws Exception {
         Screen screen = new Screen();
@@ -332,14 +336,7 @@ public class TestForm {
         (new WebDriverWait(driver,10)).until(ExpectedConditions.elementToBeClickable(By.id(id)));
     }
 
-    public void complementDInformation(int c) throws Exception {
-        insertKey(driver,"view:_id1:_id635:_id646:CandidatNbrePostulation3mois",readCell(0,31,c));
-        insertKey(driver,"view:_id1:_id648:_id659:CandidatNbreRDVObtenus",readCell(0,32,c));
-        insertKey(driver,"view:_id1:_id662:_id673:CandidatEntreprisesCibles",readCell(0,33,c));
-        insertKey(driver,"view:_id1:companyRefresh:_id684:CandidatEntreprisesRencontrees",readCell(0,34,c));
-        insertKey(driver,"view:_id1:_id685:_id696:IndisponibilitesPrevues",readCell(0,35,c));
-        insertKey(driver,"view:_id1:_id697:_id708:Comments",readCell(0,36,c));
-    }
+
 
     public void send() throws Exception {
         boolean passed=false;

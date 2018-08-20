@@ -107,7 +107,7 @@ fabric.properties
 /target/surefire-reports/testng-results.xml
 /target/surefire-reports/TestSelenium.txt
 /target/surefire-reports/TEST-TestSelenium.xml
-/target/test-classes/TestSelenium.class
+/target/test-classes/*.class
 /target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
 /target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
 /target/surefire-reports/bullet_point.png
