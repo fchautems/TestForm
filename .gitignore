@@ -1,0 +1,113 @@
+
+# Created by https://www.gitignore.io/api/intellij
+
+### Intellij ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+
+# CMake
+cmake-build-*/
+
+# Mongo Explorer plugin
+.idea/**/mongoSettings.xml
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Cursive Clojure plugin
+.idea/replstate.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Editor-based Rest Client
+.idea/httpRequests
+
+### Intellij Patch ###
+# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+
+# *.iml
+# modules.xml
+# .idea/misc.xml
+# *.ipr
+
+# Sonarlint plugin
+.idea/sonarlint
+
+
+# End of https://www.gitignore.io/api/intellij
+/target/surefire-reports/collapseall.gif
+/target/surefire-reports/emailable-report.html
+/target/surefire-reports/failed.png
+/target/surefire-reports/index.html
+/target/surefire-reports/jquery-1.7.1.min.js
+/target/surefire-reports/junitreports/TEST-TestSelenium.xml
+/target/surefire-reports/navigator-bullet.png
+/target/surefire-reports/old/index.html
+/target/surefire-reports/old/Surefire suite/classes.html
+/target/surefire-reports/old/Surefire suite/groups.html
+/target/surefire-reports/old/Surefire suite/index.html
+/target/surefire-reports/old/Surefire suite/main.html
+/target/surefire-reports/old/Surefire suite/methods.html
+/target/surefire-reports/old/Surefire suite/methods-alphabetical.html
+/target/surefire-reports/old/Surefire suite/methods-not-run.html
+/target/surefire-reports/old/Surefire suite/reporter-output.html
+/target/surefire-reports/old/Surefire suite/Surefire test.properties
+/target/surefire-reports/old/Surefire suite/testng.xml.html
+/target/surefire-reports/old/Surefire suite/toc.html
+/target/surefire-reports/passed.png
+/target/surefire-reports/skipped.png
+/target/surefire-reports/Surefire suite/Surefire test.html
+/target/surefire-reports/Surefire suite/Surefire test.xml
+/target/surefire-reports/Surefire suite/testng-failed.xml
+/target/surefire-reports/testng.css
+/target/surefire-reports/testng-failed.xml
+/target/surefire-reports/testng-reports.css
+/target/surefire-reports/testng-reports.js
+/target/surefire-reports/testng-results.xml
+/target/surefire-reports/TestSelenium.txt
+/target/surefire-reports/TEST-TestSelenium.xml
+/target/test-classes/TestSelenium.class
+/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst
+/target/surefire-reports/bullet_point.png
