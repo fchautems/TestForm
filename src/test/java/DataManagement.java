@@ -6,18 +6,14 @@ import jxl.read.biff.BiffException;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
 
 public class DataManagement {
 
     private Workbook workbook;
 
-    private List<List<String>> list;
-
-    private Iterator<List<String>> iterator;
-
     private WorkbookSettings ws = new WorkbookSettings();
+
+    public static final String DATA_PROVIDER = "DataProvider";
 
     public void loadXLS(String pathname) {
 
@@ -40,18 +36,19 @@ public class DataManagement {
         }*/
     }
 
-    public Iterator<List<String>> readAll(int rowMin, int rowMax, int colMin, int colMax)
+    public DataForm[] readAll(int rowMin, int rowMax, int colMin, int colMax)
     {
-        List<String> ligne = null;
-        for(int i=rowMin;i<rowMax;i++)
+        DataForm[] data=new DataForm[rowMax-rowMin+1];
+        for(int i=rowMin;i<=rowMax;i++)
         {
-            for(int j=colMin;j<colMax;j++)
+            //System.out.println("I MOINS ROW MIN : "+ (i-rowMin));
+            data[i-rowMin]=new DataForm();
+            for(int j=colMin;j<=colMax;j++)
             {
-                ligne.add(readCell(0,i,j));
+                data[i-rowMin].add(readCell(0,0,j),readCell(0,i,j));
             }
-            list.add(ligne);
         }
-        return list.iterator();
+        return data;
     }
 
     public String readCell(int sheet,int row, int col)
@@ -59,7 +56,7 @@ public class DataManagement {
         /* Un fichier excel est composé de plusieurs feuilles, on y accède de la manière suivante*/
         Sheet s = workbook.getSheet(sheet);
         /* On accède aux cellules avec la méthode getCell(indiceColonne, indiceLigne) */
-        Cell c = s.getCell(row ,col);
+        Cell c = s.getCell(col ,row);
         return c.getContents();
     }
 

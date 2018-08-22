@@ -1,14 +1,8 @@
-import java.io.IOException;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
-import jxl.Cell;
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.read.biff.BiffException;
 
-import java.io.File;
-//import org.junit.*;
-//import org.junit.Assert;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -19,10 +13,7 @@ import org.sikuli.script.Pattern;
 import org.sikuli.script.Screen;
 import org.testng.Assert;
 import org.testng.annotations.*;
-/*import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
-import org.testng.annotations.Test;
+
 //import java.nio.charset.Charset;*/
 
 public class TestForm {
@@ -33,14 +24,61 @@ public class TestForm {
     private static String SikuliPath;
     private static String baseUrl;
     private static int timeout=5000;
+    private static final String MESSAGE_PROVIDER = "MessageProvider";
+    private static DataManagement dm=new DataManagement();
+    private static int index = 0 ;
+    private static DataForm[] data;
+
+    private static final int rowMin=1;
+    private static final int rowMax=6;
+    private static final int colMin=0;
+    private static final int colMax=36;
 
     //private static Workbook workbook;
 
     //private static WorkbookSettings ws = new WorkbookSettings();
 
-    private DataManagement data=new DataManagement();
+    //private DataManagement data=new DataManagement();
+    private MessageProvider mp = new MessageProvider();
 
-    //public static final Charset UTF_8 = Charset.forName("UTF-8");
+    public static void initData()
+    {
+        dm.loadXLS("C:\\Users\\fchautem\\TestLab4techForm\\src\\test\\resources\\TestData.xls");
+        //data=new DataForm[2];
+        data=dm.readAll(rowMin,rowMax,colMin,colMax);
+        dm.quitXLS();
+        //System.out.println("LONGUEUR : " + data.length);
+        for(int i=0;i<rowMax-rowMin+1;i++)data[i].print();
+    }
+
+    public static class IteratorData implements Iterator<Object>
+    {
+        private IteratorData()
+        {
+            initData();
+        }
+
+        public boolean hasNext() {
+            return index < data.length;
+        }
+
+        public DataForm next() {
+            System.out.println("NEXT : " + index);
+            DataForm df = data[index];
+            index++ ;
+            return df;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException() ;
+        }
+    }
+
+    @DataProvider(name=MESSAGE_PROVIDER)
+    public static Iterator<Object> provideMessage() {
+        return new IteratorData();
+    }
+
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -60,49 +98,20 @@ public class TestForm {
         //java.nio.charset.StandardCharsets.UTF_8.encode(string);
     }
 
-    /*public void loadXLS(String pathname) {
-
-        workbook=null;
-        try {
-            workbook = Workbook.getWorkbook(new File(pathname));
-        }
-        catch (BiffException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String readCell(int sheet,int row, int col)
-    {
-        Sheet s = workbook.getSheet(sheet);
-        Cell c = s.getCell(row ,col);
-        return c.getContents();
-    }
-
-    public void quitXLS()
-    {
-        if(workbook!=null){
-            workbook.close();
-        }
-    }*/
-
-
     public void init() throws Exception {
 
         /*int i=0;
         System.out.println(i++);*/
 
-        data.loadXLS("C:\\Users\\fchautem\\TestLab4techForm\\src\\test\\resources\\TestData.xls");
+        //data.loadXLS("C:\\Users\\fchautem\\TestLab4techForm\\src\\test\\resources\\TestData.xls");
         //ws.setEncoding("UTF-8");
         driver.get(baseUrl);
-
+        //mp.init();
         /*driver.findElement(By.id("view:_id1:_id46:_id57:TypeProvenance")).click();
         new Select(driver.findElement(By.id("view:_id1:_id46:_id57:TypeProvenance"))).selectByVisibleText("LACI (assurance-chômage)");*/
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    /*@Ignore(retryAnalyzer = RetryAnalyzer.class)
     public void testFormulaireAvecMesureLACI() throws Exception {
         init();
         donneesORPLACIAvecMesure(1);
@@ -115,7 +124,7 @@ public class TestForm {
         data.quitXLS();
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Ignore(retryAnalyzer = RetryAnalyzer.class)
     public void testFormulaireSansMesureLACI() throws Exception {
         init();
          donneesORPLACISansMesure(2);
@@ -128,7 +137,7 @@ public class TestForm {
         data.quitXLS();
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Ignore(retryAnalyzer = RetryAnalyzer.class)
     public void testFormulaireAvecMesureRI() throws Exception {
         init();
         donneesORPRIAvecMesure(3);
@@ -141,7 +150,7 @@ public class TestForm {
         data.quitXLS();
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Ignore(retryAnalyzer = RetryAnalyzer.class)
     public void testFormulaireSansMesureRI() throws Exception {
         init();
         donneesORPRISansMesure(4);
@@ -154,7 +163,7 @@ public class TestForm {
         data.quitXLS();
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Ignore(retryAnalyzer = RetryAnalyzer.class)
     public void testFormulaireAvecMesureAI() throws Exception {
         init();
         donneesORPAIAvecMesure(5);
@@ -167,7 +176,7 @@ public class TestForm {
         data.quitXLS();
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Ignore(retryAnalyzer = RetryAnalyzer.class)
     public void testFormulaireSansMesureAI() throws Exception {
         init();
         donneesORPAISansMesure(6);
@@ -178,12 +187,31 @@ public class TestForm {
         send();
         Assert.assertTrue(checkConfirmation());
         data.quitXLS();
+}
+    }*/
+
+    @Test(retryAnalyzer = RetryAnalyzer.class,dataProvider="MessageProvider")
+    public void allMandatoryFields(DataForm df) throws Exception {
+        init();
+        donneesORP(df);
+        donneesPersonnelles(df);
+        preferencesDeTravail(df);
+        complementDInformation(df);
+        upload();
+        send();
+        Assert.assertTrue(checkConfirmation());
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    /*@Test()
     public void allMandatoryFields() throws Exception {
+        System.out.println("INIT");
         init();
-        donneesORPLACISansMesure(8);
+        DataForm df;
+        df=data.readAll(0,1,0,36)[0];
+
+        testDataSet(df); System.out.println("testDataSet");
+
+        /*donneesORPLACISansMesure(8);
         donneesPersonnelles(8);
         preferencesDeTravail(8);
         complementDInformation(8);
@@ -191,7 +219,7 @@ public class TestForm {
         send();
         Assert.assertTrue(checkConfirmation());
         data.quitXLS();
-    }
+    }*/
 
     @AfterClass
     public static void tearDown() throws Exception {
@@ -199,24 +227,61 @@ public class TestForm {
         driver.quit();
     }
 
-    public void donneesORPLACIAvecMesure(int c) throws Exception {
-        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
-        selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
-        selectKey(driver,"view:_id1:_id87:_id98:ORP",data.readCell(0,2,c));
-        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",data.readCell(0,3,c));
-        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",data.readCell(0,4,c));
-        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",data.readCell(0,5,c));
-        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
-        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
-        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",data.readCell(0,8,c));
-        insertKey(driver,"view:_id1:_id157:_id168:NbreIndemnites",data.readCell(0,9,c));
-        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
-        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",data.readCell(0,11,c));
+    public void donneesORP(DataForm df) throws Exception {
+        System.out.println("Execution Numero : " + index);
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",df.get("TypeProvenance"));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",df.get("Canton"));
+        selectKey(driver,"view:_id1:_id87:_id98:ORP",df.get("ORP"));
+        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",df.get("CaisseChomage"));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",df.get("TypePrestation"));
+        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",df.get("ORPDateInscription"));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",df.get("CPEmail"));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",df.get("MesureLab4tech"));
+        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",df.get("NumAssureORP"));
+        insertKey(driver,"view:_id1:_id157:_id168:NbreIndemnites",df.get("NbreIndemnites"));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",df.get("MesureSuiviReponse"));
+        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",df.get("MesureSuiviDetail"));
+    }
+
+
+    public void donneesPersonnelles(DataForm df) throws Exception {
+        //Thread.sleep(30000);
+        selectKey(driver,"view:_id1:_id353:_id364:CandidateTitre",df.get("CandidateTitre"));
+        insertKey(driver,"view:_id1:_id365:_id376:CandidatPrenom",df.get("CandidatPrenom"));
+        insertKey(driver,"view:_id1:_id377:_id388:CandidatNom",df.get("CandidatNom"));
+        insertKey(driver,"view:_id1:_id389:_id400:CandidatAdresse",df.get("CandidatAdresse"));
+        insertKey(driver,"view:_id1:_id401:_id413:npaField",df.get("npaField"));
+        insertKey(driver,"view:_id1:candidatVilleField:_id426:_id427:_id428:cityField",df.get("candidatVilleField"));
+        insertKey(driver,"view:_id1:_id436:_id447:CandidatEmail",df.get("CandidatEmail"));
+        insertKey(driver,"view:_id1:_id449:_id460:CandidatPhone",df.get("CandidatPhone"));
+        insertKey(driver,"view:_id1:_id461:_id472:CandidatMobile",df.get("CandidatMobile"));
+        selectKey(driver,"view:_id1:_id473:_id484:CandidatEtatCivil",df.get("CandidatEtatCivil"));
+        selectKey(driver,"view:_id1:_id485:_id496:CandidatNationalite",df.get("CandidatNationalite"));
+        insertKey(driver,"view:_id1:_id497:_id508:CandidatAnniversaire",df.get("CandidatAnniversaire"));
+        insertKey(driver,"view:_id1:_id511:_id522:CandidatWebsite",df.get("CandidatWebsite"));
+        insertKey(driver,"view:_id1:_id523:_id534:CandidatNumAVS",df.get("CandidatNumAVS"));
+    }
+
+
+
+    /*public void donneesORPLACIAvecMesure(DataForm df) throws Exception {
+        selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",df.get("TypeProvenance"));
+        selectKey(driver,"view:_id1:_id61:_id72:Canton",df.get("Canton"));
+        selectKey(driver,"view:_id1:_id87:_id98:ORP",df.get("ORP"));
+        selectKey(driver,"view:_id1:first_caisse_refresh:_id109:CaisseChomage",df.get("CaisseChomage"));
+        selectKey(driver,"view:_id1:_id114:_id125:TypePrestation",df.get("TypePrestation"));
+        insertKey(driver,"view:_id1:_id142:_id153:ORPDateInscription",df.get("ORPDateInscription"));
+        insertKey(driver,"view:_id1:_id170:_id181:CPEmail",df.get("CPEmail"));
+        selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",df.get("MesureLab4tech"));
+        insertKey(driver,"view:_id1:_id75:_id86:NumAssureORP",df.get("NumAssureORP"));
+        insertKey(driver,"view:_id1:_id157:_id168:NbreIndemnites",df.get("NbreIndemnites"));
+        selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",df.get("MesureSuiviReponse"));
+        insertKey(driver,"view:_id1:stageCompany:_id222:MesureSuiviDetail",df.get("MesureSuiviDetail"));
         //System.out.println(readCell(0,11,c));
         //Thread.sleep(10000);
     }
 
-    public void donneesORPLACISansMesure(int c) throws Exception {
+    public void donneesORPLACISansMesure(DataForm df) throws Exception {
         selectKey(driver,"view:_id1:_id46:_id57:TypeProvenance",data.readCell(0,0,c));
         selectKey(driver,"view:_id1:_id61:_id72:Canton",data.readCell(0,1,c));
         selectKey(driver,"view:_id1:_id87:_id98:ORP",data.readCell(0,2,1));
@@ -276,48 +341,46 @@ public class TestForm {
         insertKey(driver,"view:_id1:_id170:_id181:CPEmail",data.readCell(0,6,c));
         selectKey(driver,"view:_id1:_id185:_id196:MesureLab4tech",data.readCell(0,7,c));
         selectKey(driver,"view:_id1:_id198:_id209:MesureSuiviReponse",data.readCell(0,10,c));
-    }
+    }*/
 
-    public void donneesPersonnelles(int c) throws Exception {
+    public void preferencesDeTravail(DataForm df) throws Exception {
         //Thread.sleep(30000);
-        selectKey(driver,"view:_id1:_id353:_id364:CandidateTitre",data.readCell(0,12,c));
-        insertKey(driver,"view:_id1:_id365:_id376:CandidatPrenom",data.readCell(0,13,c));
-        insertKey(driver,"view:_id1:_id377:_id388:CandidatNom",data.readCell(0,14,c));
-        insertKey(driver,"view:_id1:_id389:_id400:CandidatAdresse",data.readCell(0,15,c));
-        insertKey(driver,"view:_id1:_id401:_id413:npaField",data.readCell(0,16,c));
-        insertKey(driver,"view:_id1:candidatVilleField:_id426:_id427:_id428:cityField",data.readCell(0,17,c));
-        insertKey(driver,"view:_id1:_id436:_id447:CandidatEmail",data.readCell(0,18,c));
-        insertKey(driver,"view:_id1:_id449:_id460:CandidatPhone",data.readCell(0,19,c));
-        insertKey(driver,"view:_id1:_id461:_id472:CandidatMobile",data.readCell(0,20,c));
-        selectKey(driver,"view:_id1:_id473:_id484:CandidatEtatCivil",data.readCell(0,21,c));
-        selectKey(driver,"view:_id1:_id485:_id496:CandidatNationalite",data.readCell(0,22,c));
-        insertKey(driver,"view:_id1:_id497:_id508:CandidatAnniversaire",data.readCell(0,23,c));
-        insertKey(driver,"view:_id1:_id511:_id522:CandidatWebsite",data.readCell(0,24,c));
-        insertKey(driver,"view:_id1:_id523:_id534:CandidatNumAVS",data.readCell(0,25,c));
+        selectKey(driver,"view:_id1:_id545:_id556:CandidatSecteurActivite",df.get("CandidatSecteurActivite"));
+        insertKey(driver,"view:_id1:_id557:_id568:CandidatJobActuel",df.get("CandidatJobActuel"));
+        insertKey(driver,"view:_id1:_id569:_id580:CandidatJobSouhait",df.get("CandidatJobSouhait"));
+        selectKey(driver,"view:_id1:_id582:_id593:CandidatJobTauxOccup",df.get("CandidatJobTauxOccup"));
+        selectKey(driver,"view:_id1:_id594:_id605:CandidatJobDispo",df.get("CandidatJobDispo"));
     }
 
-    public void preferencesDeTravail(int c) throws Exception {
-        //Thread.sleep(30000);
-        selectKey(driver,"view:_id1:_id545:_id556:CandidatSecteurActivite",data.readCell(0,26,c));
-        insertKey(driver,"view:_id1:_id557:_id568:CandidatJobActuel",data.readCell(0,27,c));
-        insertKey(driver,"view:_id1:_id569:_id580:CandidatJobSouhait",data.readCell(0,28,c));
-        selectKey(driver,"view:_id1:_id582:_id593:CandidatJobTauxOccup",data.readCell(0,29,c));
-        selectKey(driver,"view:_id1:_id594:_id605:CandidatJobDispo",data.readCell(0,30,c));
+     public void complementDInformation(DataForm df) throws Exception {
+        try {
+            insertKey(driver, "view:_id1:_id635:_id646:CandidatNbrePostulation3mois", df.get("CandidatNbrePostulation3mois"));
+            System.out.println("CandidatNbrePostulation3mois");
+            System.out.println(df.get("CandidatNbrePostulation3mois"));
+            insertKey(driver, "view:_id1:_id648:_id659:CandidatNbreRDVObtenus", df.get("CandidatNbreRDVObtenus"));
+            System.out.println("CandidatNbreRDVObtenus");
+            System.out.println(df.get("CandidatNbreRDVObtenus"));
+            insertKey(driver, "view:_id1:_id662:_id673:CandidatEntreprisesCibles", df.get("CandidatEntreprisesCibles"));
+            System.out.println("CandidatEntreprisesCibles");
+            System.out.println(df.get("CandidatEntreprisesCibles"));
+            insertKey(driver, "view:_id1:companyRefresh:_id684:CandidatEntreprisesRencontrees", df.get("CandidatEntreprisesRencontrees"));
+            System.out.println("CandidatEntreprisesRencontrees");
+            System.out.println(df.get("CandidatEntreprisesRencontrees"));
+            insertKey(driver, "view:_id1:_id685:_id696:IndisponibilitesPrevues", df.get("IndisponibilitesPrevues"));
+            System.out.println("IndisponibilitesPrevues");
+            System.out.println(df.get("IndisponibilitesPrevues"));
+            insertKey(driver, "view:_id1:_id697:_id708:Comments", df.get("Comments"));
+            System.out.println("Comments");
+            System.out.println(df.get("Comments"));
+        }catch(Exception e)
+        {
+            System.out.println("MERDE UNE ERREUR : " + e.getStackTrace());
+        }
     }
-
-     public void complementDInformation(int c) throws Exception {
-        insertKey(driver,"view:_id1:_id635:_id646:CandidatNbrePostulation3mois",data.readCell(0,31,c));
-        insertKey(driver,"view:_id1:_id648:_id659:CandidatNbreRDVObtenus",data.readCell(0,32,c));
-        insertKey(driver,"view:_id1:_id662:_id673:CandidatEntreprisesCibles",data.readCell(0,33,c));
-        insertKey(driver,"view:_id1:companyRefresh:_id684:CandidatEntreprisesRencontrees",data.readCell(0,34,c));
-        insertKey(driver,"view:_id1:_id685:_id696:IndisponibilitesPrevues",data.readCell(0,35,c));
-        insertKey(driver,"view:_id1:_id697:_id708:Comments",data.readCell(0,36,c));
-    }
-
 
     public void upload() throws Exception {
+        System.out.println("Je suis dans la méthode upload");
         Screen screen = new Screen();
-
         Thread.sleep(2000);
         screen.type(Key.END);
         screen.click(SikuliPath + "parcourir.png");
@@ -335,8 +398,6 @@ public class TestForm {
     {
         (new WebDriverWait(driver,10)).until(ExpectedConditions.elementToBeClickable(By.id(id)));
     }
-
-
 
     public void send() throws Exception {
         boolean passed=false;
