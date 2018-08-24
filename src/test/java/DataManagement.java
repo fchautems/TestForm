@@ -17,52 +17,40 @@ public class DataManagement {
 
     public void loadXLS(String pathname) {
 
-        workbook=null;
+        workbook = null;
         ws.setEncoding("UTF-8");
         try {
             /* Récupération du classeur Excel (en lecture) */
             workbook = Workbook.getWorkbook(new File(pathname));
-        }
-        catch (BiffException e) {
+        } catch (BiffException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-        /*finally {
-            if(workbook!=null){
-                workbook.close();
-            }
-        }*/
     }
 
-    public DataForm[] readAll(int rowMin, int rowMax, int colMin, int colMax)
-    {
-        DataForm[] data=new DataForm[rowMax-rowMin+1];
-        for(int i=rowMin;i<=rowMax;i++)
-        {
+    public DataForm[] readAll(int rowMin, int rowMax, int colMin, int colMax) {
+        DataForm[] data = new DataForm[rowMax - rowMin + 1];
+        for (int i = rowMin; i <= rowMax; i++) {
             //System.out.println("I MOINS ROW MIN : "+ (i-rowMin));
-            data[i-rowMin]=new DataForm();
-            for(int j=colMin;j<=colMax;j++)
-            {
-                data[i-rowMin].add(readCell(0,0,j),readCell(0,i,j));
+            data[i - rowMin] = new DataForm();
+            for (int j = colMin; j <= colMax; j++) {
+                data[i - rowMin].add(readCell(0, 0, j), readCell(0, i, j));
             }
         }
         return data;
     }
 
-    public String readCell(int sheet,int row, int col)
-    {
+    public String readCell(int sheet, int row, int col) {
         /* Un fichier excel est composé de plusieurs feuilles, on y accède de la manière suivante*/
         Sheet s = workbook.getSheet(sheet);
         /* On accède aux cellules avec la méthode getCell(indiceColonne, indiceLigne) */
-        Cell c = s.getCell(col ,row);
+        Cell c = s.getCell(col, row);
         return c.getContents();
     }
 
-    public void quitXLS()
-    {
-        if(workbook!=null){
+    public void quitXLS() {
+        if (workbook != null) {
             workbook.close();
         }
     }
