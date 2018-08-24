@@ -26,6 +26,12 @@ public class RetryAnalyzer implements IRetryAnalyzer {
             counter++;
             return true;
         }
+        resetRetrycount();
         return false;
+    }
+
+    public void resetRetrycount()
+    {
+        retryLimit = 0;
     }
 }
